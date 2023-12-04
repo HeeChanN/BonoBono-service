@@ -24,11 +24,11 @@ public class BonoBonoService {
     @Transactional
     public String makeUrl(MakeQusReq makeQusReq){
         Random rand = new Random();
-        String alpha = "abcdefghijklmnopqrlsuvwxwzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String alpha = "abcdefghijklmnopqrlsuvwxwzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         String code = "";
         while(true) {
             for (int i = 0; i < 8; i++) {
-                Integer tmp = rand.nextInt(52);
+                Integer tmp = rand.nextInt(62);
                 code += alpha.charAt(tmp);
             }
 
@@ -39,7 +39,7 @@ public class BonoBonoService {
 
         List<Question> list =  new ArrayList<Question>();
 
-        for(int i =0;i<8;i++){
+        for(int i =0;i<10;i++){
             list.add(Question.builder()
                             .content(makeQusReq.getQuestions().get(i)*10 + makeQusReq.getAnswers().get(i)).build());
         }
