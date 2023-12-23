@@ -2,9 +2,11 @@ package com.lion.bonobono.service;
 
 
 import com.lion.bonobono.dto.MakeQusReq;
+import com.lion.bonobono.dto.ResultDto;
 import com.lion.bonobono.repository.BonoBonoRepository;
 import com.lion.bonobono.repository.Member;
 import com.lion.bonobono.repository.Question;
+import com.lion.bonobono.repository.Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,5 +71,37 @@ public class BonoBonoService {
                 .answers(answers)
                 .questions(questions)
                 .build();
+    }
+
+    public String makeResult(String url, String name, Integer score)throws Exception{
+        Member member = bonoRepository.findByUrl(url)
+                .orElseThrow(()->new Exception("유저가 존재하지 않습니다."));
+
+        Result result = new Result(name, score, member);
+
+        member.getResults().add(result);
+
+        bonoRepository.save(member);
+
+        return "등록 완료";
+    }
+
+    public List<ResultDto> getRank(String url)throws Exception{
+        Member member = bonoRepository.findByUrl(url)
+                .orElseThrow(()->new Exception("유저가 존재하지 않습니다."));
+
+        List<ResultDto> results =member.getResults().stream().sorted((o1,o2)->{
+            if(o1.getScore()>o2.getScore()){
+                return -1;
+            }
+            else if (o1.getScore() == o2.getScore()){
+                return 0;
+            }
+            else
+                return 1;
+        }).map(o->new ResultDto(o.getName(),o.getScore())).collect(Collectors.toList());
+
+        return results;
+
     }
 }

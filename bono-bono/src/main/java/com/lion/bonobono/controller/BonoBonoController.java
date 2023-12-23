@@ -47,4 +47,33 @@ public class BonoBonoController {
                     .body(e.getMessage());
         }
     }
+
+    @PostMapping("/result/{code}")
+    public ResponseEntity<?> result(@PathVariable(name ="code") String code,
+                                    @RequestParam("name") String name,
+                                    @RequestParam("score") Integer score)
+    {
+        try {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(bonoBonoService.makeResult(code,name,score));
+        }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/{code}/rank")
+    public ResponseEntity<?> getRank(@PathVariable(name ="code") String code)
+    {
+        try {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(bonoBonoService.getRank(code));
+        }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
+    }
+
 }

@@ -28,6 +28,9 @@ public class Member {
     @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Question> questions=new ArrayList<Question>();
 
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Result> results = new ArrayList<>();
+
     public void setQuestions(List<Question> list){
         this.questions =list;
         questions.forEach(o->o.setMember(this));
