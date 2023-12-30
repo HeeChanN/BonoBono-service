@@ -101,6 +101,17 @@ public class BonoBonoService {
                 return 1;
         }).map(o->new ResultDto(o.getName(),o.getScore())).collect(Collectors.toList());
 
+        Integer m = results.get(0).getScore();
+        Integer rank = 1;
+
+        for(ResultDto r : results){
+            if(r.getScore()<m){
+                rank = rank + 1;
+                m = r.getScore();
+            }
+            r.setRank(rank);
+        }
+
         return results;
 
     }
